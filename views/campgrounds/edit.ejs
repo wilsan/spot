@@ -11,8 +11,9 @@
          </div>
          <div class="mb-3">
             <label class="form-label" for="location">Location</label>
-            <input class="form-control" type="text" name="campground[location]" id="location" value="<%= camp.location %>" required>
+            <input class="form-control" type="url" name="campground[location]" id="location" value="<%= camp.location %>" required>
             <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide a valid URL.</div>
          </div>
          <div class="mb-3">
             <label class="form-label" for="image">Image Url</label>
