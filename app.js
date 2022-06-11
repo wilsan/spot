@@ -69,7 +69,7 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) =
 }));
 // Render the selected campground
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-   const camp = await Campground.findById(req.params.id);
+   const camp = await Campground.findById(req.params.id).populate('reviews');
    res.render('campgrounds/show', { camp });
 }));
 // Render form to edit a campground
@@ -87,6 +87,8 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
    await Campground.findByIdAndDelete(req.params.id);
    res.redirect('/campgrounds');
 }));
+
+
 // Add a review for the selected camp
 app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
    const camp = await Campground.findById(req.params.id);
@@ -95,6 +97,13 @@ app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res)
    await review.save();
    await camp.save();
    res.redirect(`/campgrounds/${camp._id}`);
+}));
+// Delete a review
+app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+   const { id, reviewId } = req.params;
+   await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+   await Review.findByIdAndDelete(reviewId);
+   res.redirect(`/campgrounds/${id}`);
 }));
 
 // 404 Error
