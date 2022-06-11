@@ -7,7 +7,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const { campgroundSchema } = require('./validationSchema');
+const { campgroundSchema, reviewSchema } = require('./validationSchema');
 const Review = require('./models/review');
 
 
@@ -29,6 +29,16 @@ app.use(methodOverride('_method'));
 // JOI validation middleware
 const validateCampground = (req, res, next) => {
    const { error } = campgroundSchema.validate(req.body);
+   if (error) {
+      const msg = error.details.map(el => el.message).join(',');
+      throw new ExpressError(msg, 400);
+   } else {
+      next();
+   }
+}
+
+const validateReview = (req, res, next) => {
+   const { error } = reviewSchema.validate(req.body);
    if (error) {
       const msg = error.details.map(el => el.message).join(',');
       throw new ExpressError(msg, 400);
@@ -78,7 +88,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
    res.redirect('/campgrounds');
 }));
 // Add a review for the selected camp
-app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
    const camp = await Campground.findById(req.params.id);
    const review = new Review(req.body.review);
    camp.reviews.push(review);
