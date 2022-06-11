@@ -8,6 +8,7 @@ const ejsMate = require('ejs-mate');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const { campgroundSchema } = require('./validationSchema');
+const Review = require('./models/review');
 
 
 mongoose.connect('mongodb://localhost:27017/spot')
@@ -75,6 +76,15 @@ app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
 app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
    await Campground.findByIdAndDelete(req.params.id);
    res.redirect('/campgrounds');
+}));
+// Add a review for the selected camp
+app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+   const camp = await Campground.findById(req.params.id);
+   const review = new Review(req.body.review);
+   camp.reviews.push(review);
+   await review.save();
+   await camp.save();
+   res.redirect(`/campgrounds/${camp._id}`);
 }));
 
 // 404 Error
