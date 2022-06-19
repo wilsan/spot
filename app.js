@@ -7,10 +7,14 @@ const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
 // Routes
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
 
 mongoose.connect('mongodb://localhost:27017/spot')
    .then(() => {
@@ -42,10 +46,14 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-// Render the home page
-app.get('/', (req, res) => {
-   res.render('home')
-});
+// Authentication
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 // Flash message middleware
 app.use((req, res, next) => {
@@ -58,6 +66,13 @@ app.use((req, res, next) => {
 app.use('/campgrounds', campgroundRoutes);
 // Review routes
 app.use('/campgrounds/:id/reviews', reviewRoutes);
+// User routes
+app.use('/', userRoutes);
+
+// Render the home page
+app.get('/', (req, res) => {
+   res.render('home')
+});
 
 // 404 Error
 app.all('*', (req, res, next) => {
