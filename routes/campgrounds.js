@@ -67,7 +67,6 @@ router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res) =
 // Delete a campground
 router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
    const camp = await Campground.findByIdAndDelete(req.params.id);
-   console.log(camp);
    req.flash('success', `Successfully deleted ${camp.title}!`);
    res.redirect('/campgrounds');
 }));
