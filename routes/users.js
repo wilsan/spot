@@ -8,23 +8,30 @@ const catchAsync = require('../utils/catchAsync');
 router.get('/register', (req, res) => {
    res.render('users/register');
 });
+
 // Add user to database
 router.post('/register', catchAsync(async (req, res) => {
    try {
       const { email, username, password } = req.body;
       const user = new User({ email, username });
       const registeredUser = await User.register(user, password);
-      req.flash('success', 'Welcome to Spot!');
-      res.redirect('/campgrounds');
+      req.login(registeredUser, err => {
+         if (err)
+            return next(err);
+         req.flash('success', 'Welcome to Spot!');
+         res.redirect('/campgrounds');
+      });
    } catch (err) {
       req.flash('error', err.message);
       res.redirect('register');
    }
 }));
+
 // Serve a login form
 router.get('/login', (req, res) => {
    res.render('users/login');
 });
+
 // Login the user with the form data
 router.post(
    '/login',
@@ -34,6 +41,7 @@ router.post(
       res.redirect('/campgrounds');
    }
 );
+
 // Logout a user
 router.get('/logout', (req, res) => {
    req.logout((err) => {

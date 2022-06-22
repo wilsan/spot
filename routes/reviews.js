@@ -26,6 +26,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
    req.flash('success', 'Thankyou for your review!');
    res.redirect(`/campgrounds/${camp._id}`);
 }));
+
 // Delete a review
 router.delete('/:reviewId', catchAsync(async (req, res) => {
    const { id, reviewId } = req.params;
