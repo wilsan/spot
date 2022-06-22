@@ -55,13 +55,14 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
 // Update the edited campground in database
 router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
    await Campground.findByIdAndUpdate(req.params.id, req.body.campground);
-   req.flash('success', 'Successfully updated campground!');
+   req.flash('success', `Successfully updated ${req.body.campground.title}!`);
    res.redirect(`/campgrounds/${req.params.id}`);
 }));
 // Delete a campground
 router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
-   await Campground.findByIdAndDelete(req.params.id);
-   req.flash('success', 'Successfully deleted campground!');
+   const camp = await Campground.findByIdAndDelete(req.params.id);
+   console.log(camp);
+   req.flash('success', `Successfully deleted ${camp.title}!`);
    res.redirect('/campgrounds');
 }));
 
