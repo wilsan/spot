@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
 
+
 // Serve a registration form
 router.get('/register', (req, res) => {
    res.render('users/register');

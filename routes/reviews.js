@@ -3,18 +3,8 @@ const router = express.Router({ mergeParams: true });
 const catchAsync = require('../utils/catchAsync');
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-const { reviewSchema } = require('../validationSchema');
+const { validateReview } = require('../middleware');
 
-// JOI validation middleware
-const validateReview = (req, res, next) => {
-   const { error } = reviewSchema.validate(req.body);
-   if (error) {
-      const msg = error.details.map(el => el.message).join(',');
-      throw new ExpressError(msg, 400);
-   } else {
-      next();
-   }
-};
 
 // Add a review for the selected camp
 router.post('/', validateReview, catchAsync(async (req, res) => {
