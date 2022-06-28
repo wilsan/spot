@@ -7,27 +7,27 @@ const catchAsync = require('../utils/catchAsync');
 // Controller
 const users = require('../controllers/users');
 
-// Serve a registration form
-router.get('/register', users.renderRegisterForm);
+router.route('/register')
+   // Serve a registration form
+   .get(users.renderRegisterForm)
+   // Add user to database
+   .post(catchAsync(users.registerUser));
 
-// Add user to database
-router.post('/register', catchAsync(users.registerUser));
-
-// Serve a login form
-router.get('/login', users.renderLoginForm);
-
-// Login the user with the form data
-router.post(
-   '/login',
-   passport.authenticate('local', {
-      failureFlash: true,
-      failureRedirect: '/login',
-      keepSessionInfo: true
-   }),
-   users.loginUser
-);
+router.route('/login')
+   // Serve a login form
+   .get(users.renderLoginForm)
+   // Login the user with the form data
+   .post(
+      passport.authenticate('local', {
+         failureFlash: true,
+         failureRedirect: '/login',
+         keepSessionInfo: true
+      }),
+      users.loginUser
+   );
 
 // Logout a user
 router.get('/logout', users.logoutUser);
+
 
 module.exports = router;
