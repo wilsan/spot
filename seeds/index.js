@@ -24,13 +24,22 @@ const seedDB = async () => {
          author: '62af8abbae3e7ea186f1d807',
          location: `${cities[rand1600].city}, ${cities[rand1600].state}`,
          title: `${sample(descriptors)} ${sample(places)}`,
-         image: 'https://source.unsplash.com/collection/483251',
-         description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. In velit eius, deserunt nihil, voluptatum iusto praesentium perferendis vel vitae et laboriosam dolorem exercitationem iste nobis autem fugit blanditiis, sequi dolore?\n Facere, asperiores numquam similique tempore iusto pariatur, omnis dolor laudantium minima sunt nihil dolores sit aspernatur rem aperiam culpa non, corporis vel aut eum adipisci! Dignissimos deleniti consequuntur eaque dolore.',
-         price: price
+         description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. In velit eius, deserunt nihil, voluptatum iusto praesentium perferendis vel vitae et laboriosam dolorem exercitationem iste nobis autem fugit blanditiis.',
+         price: price,
+         images: [
+            {
+               url: 'https://res.cloudinary.com/dd15gpoln/image/upload/v1656516058/Spot/xbwb8ex5thhxqff5lmum.jpg',
+               filename: 'Spot/xbwb8ex5thhxqff5lmum'
+            },
+            {
+               url: 'https://res.cloudinary.com/dd15gpoln/image/upload/v1656516057/Spot/v375eyibieua7zlrzim9.jpg',
+               filename: 'Spot/v375eyibieua7zlrzim9'
+            }
+         ]
       });
       await camp.save();
    }
-}
+};
 
 seedDB().then(() => {
    mongoose.connection.close();

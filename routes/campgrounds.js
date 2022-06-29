@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const { validateCampground, isLoggedIn, isAuthor } = require('../middleware');
+const multer = require('multer');
+const { storage } = require('../utils/cloudinary');
+const upload = multer({ storage });
 
 // Controller
 const campgrounds = require('../controllers/campgrounds');
@@ -10,7 +13,11 @@ router.route('/')
    // Render all the campgrounds
    .get(catchAsync(campgrounds.index))
    // Save the new campground to database
-   .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
+   .post(isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgrounds.createCampground));
+   // .post(upload.array('image'), (req, res) => {
+   //    console.log(req.body, req.files);
+   //    res.send('it worked');
+   // });
 
 // Render form to create a new campground
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);
@@ -19,7 +26,7 @@ router.route('/:id')
    // Render the selected campground
    .get(catchAsync(campgrounds.showCampground))
    // Update the edited campground in database
-   .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
+   .put(isLoggedIn, isAuthor, upload.array('image'), validateCampground, catchAsync(campgrounds.updateCampground))
    // Delete a campground
    .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground));
 
