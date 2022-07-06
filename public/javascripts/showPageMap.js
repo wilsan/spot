@@ -1,8 +1,10 @@
 mapboxgl.accessToken = mapToken;
+const campground = JSON.parse(camp);
+
 const map = new mapboxgl.Map({
    container: 'map', // container ID
    style: 'mapbox://styles/mapbox/streets-v11', // style URL
-   center: JSON.parse(campGeometry).coordinates, // starting position [lng, lat]
+   center: campground.geometry.coordinates, // starting position [lng, lat]
    zoom: 11, // starting zoom
    projection: 'globe' // display the map as a 3D globe
 });
@@ -18,5 +20,11 @@ svg.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" 
 new mapboxgl.Marker({
    element: svg
 })
-   .setLngLat(JSON.parse(campGeometry).coordinates)
+   .setLngLat(campground.geometry.coordinates)
+   .setPopup(
+      new mapboxgl.Popup({ offset: 25, focusAfterOpen: false })
+         .setHTML(
+            `<h6>${campground.title}</h6><p>${campground.location}</p>`
+         )
+   )
    .addTo(map);
