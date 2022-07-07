@@ -11,6 +11,8 @@ imageSchema.virtual('thumbnail').get(function () {
    return this.url.replace('/upload', '/upload/w_300');  // get image of width 200
 });
 
+const opts = { toJSON: { virtuals: true } };
+
 const campgroundSchema = new Schema({
    title: String,
    images: [imageSchema],
@@ -38,6 +40,15 @@ const campgroundSchema = new Schema({
          ref: 'Review'
       }
    ]
+}, opts);
+
+campgroundSchema.virtual('properties').get(function () {
+   return {
+      id: this._id,
+      title: this.title,
+      description: this.description,
+      price: this.price
+   };
 });
 
 campgroundSchema.post('findOneAndDelete', async (camp) => {
