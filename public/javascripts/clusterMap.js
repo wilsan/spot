@@ -3,7 +3,7 @@ const campgrounds = JSON.parse(camps);
 
 const map = new mapboxgl.Map({
    container: 'map',
-   style: 'mapbox://styles/mapbox/light-v10',
+   style: 'mapbox://styles/mapbox/dark-v10',
    center: [79.61528515779885, 20.1464141083974],
    zoom: 4
 });

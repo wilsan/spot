@@ -10,15 +10,15 @@
 <% for (let camp of camps) { %>
 <div class="card mb-3">
    <div class="row">
-      <div class="col-md-4">
+      <div class="col-lg-4">
          <% if (camp.images.length) { %>
-         <img class="img-fluid rounded-start" src="<%= camp.images[0].url %>" alt="">
+         <img class="img-fluid" src="<%= camp.images[0].url %>" alt="">
          <% } else { %>
-         <img class="img-fluid rounded-start" src="https://res.cloudinary.com/dd15gpoln/image/upload/v1656516058/Spot/xbwb8ex5thhxqff5lmum.jpg" alt="">
+         <img class="img-fluid" src="https://res.cloudinary.com/dd15gpoln/image/upload/v1656516058/Spot/xbwb8ex5thhxqff5lmum.jpg" alt="">
          <% } %>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-lg-8">
          <h5 class="card-title"><%= camp.title %></h5>
          <p class="card-text"><%= camp.description %></p>
          <p class="card-text">
