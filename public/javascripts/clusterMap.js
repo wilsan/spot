@@ -2,7 +2,7 @@ mapboxgl.accessToken = mapToken;
 const campgrounds = JSON.parse(camps);
 
 const map = new mapboxgl.Map({
-   container: 'map',
+   container: 'cluster-map',
    style: 'mapbox://styles/mapbox/dark-v10',
    center: [79.61528515779885, 20.1464141083974],
    zoom: 4
