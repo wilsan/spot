@@ -6,3 +6,9 @@
 #map {
    height: 350px;
 }
+
+.validation-error {
+   color: #dc3545;
+   font-size: .8rem;
+   margin-top: 4px;
+}

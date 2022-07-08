@@ -9,21 +9,18 @@
                <form action="/register" method="post" class="validated-form" novalidate>
                   <div class="my-3">
                      <label class="form-label" for="username">Username</label>
-                     <input class="form-control" type="text" name="username" id="username" required autofocus>
-                     <div class="valid-feedback">Looks good!</div>
-                     <div class="invalid-feedback">Please provide a valid username!</div>
+                     <input class="form-control" type="text" name="username" id="username" required minlength="6" autofocus>
+                     <div id="error-username" class="validation-error"></div>
                   </div>
                   <div class="mb-3">
                      <label class="form-label" for="email">Email</label>
-                     <input class="form-control" type="email" name="email" id="email" required>
-                     <div class="valid-feedback">Looks good!</div>
-                     <div class="invalid-feedback">Please provide a valid email!</div>
+                     <input class="form-control" type="email" name="email" id="email" required pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$">
+                     <div id="error-email" class="validation-error"></div>
                   </div>
                   <div class="mb-4">
                      <label class="form-label" for="password">Password</label>
-                     <input class="form-control" type="password" name="password" id="password" required>
-                     <div class="valid-feedback">Looks good!</div>
-                     <div class="invalid-feedback">Please provide a valid password!</div>
+                     <input class="form-control" type="password" name="password" id="password" required minlength="6">
+                     <div id="error-password" class="validation-error"></div>
                   </div>
                   <div class="d-grid">
                      <button class="btn btn-success">Register</button>
@@ -34,3 +31,5 @@
       </div>
    </div>
 </div>
+
+<script src="/javascripts/clientSideValidation.js"></script>
