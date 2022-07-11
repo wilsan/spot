@@ -16,12 +16,15 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
 
 // Routes
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
 
+const dbUrl = process.env.DB_URL;
+// 'mongodb://localhost:27017/spot'
 mongoose.connect('mongodb://localhost:27017/spot')
    .then(() => {
       console.log('Database connected');
@@ -39,8 +42,19 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const store = MongoStore.create({
+   mongoUrl: 'mongodb://localhost:27017/spot',
+   secret: 'thishouldbeasecret',
+   touchAfter: 24 * 60 * 60
+});
+store.on('error', err => {
+   console.log('Store error!!');
+});
+
+
 // Session & flash setup
 const sessionConfig = {
+   store,
    name: 'session',
    secret: 'thishouldbeasecret',
    resave: false,
@@ -84,22 +98,22 @@ const connectSrcUrls = [
 const fontSrcUrls = [];
 app.use(
    helmet.contentSecurityPolicy({
-       directives: {
-           defaultSrc: [],
-           connectSrc: ["'self'", ...connectSrcUrls],
-           scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-           styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-           workerSrc: ["'self'", "blob:"],
-           objectSrc: [],
-           imgSrc: [
-               "'self'",
-               "blob:",
-               "data:",
-               "https://res.cloudinary.com/dd15gpoln/",
-               "https://images.unsplash.com/",
-           ],
-           fontSrc: ["'self'", ...fontSrcUrls],
-       },
+      directives: {
+         defaultSrc: [],
+         connectSrc: ["'self'", ...connectSrcUrls],
+         scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+         styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+         workerSrc: ["'self'", "blob:"],
+         objectSrc: [],
+         imgSrc: [
+            "'self'",
+            "blob:",
+            "data:",
+            "https://res.cloudinary.com/dd15gpoln/",
+            "https://images.unsplash.com/",
+         ],
+         fontSrc: ["'self'", ...fontSrcUrls],
+      },
    })
 );
 
