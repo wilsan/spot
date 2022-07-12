@@ -5,8 +5,8 @@
    <h1 class="text-center mb-4">All Campgrounds</h1>
 
    <% for (let camp of camps) { %>
-   <div class="card mb-3">
-      <div class="row">
+   <div class="card rounded-0 shadow-sm mb-3">
+      <div class="row g-0">
          <div class="col-lg-4">
             <% if (camp.images.length) { %>
             <img class="img-fluid" src="<%= camp.images[0].url %>" alt="">
@@ -16,12 +16,14 @@
          </div>
 
          <div class="col-lg-8">
-            <h5 class="card-title"><%= camp.title %></h5>
-            <p class="card-text"><%= camp.description %></p>
-            <p class="card-text">
-               <small class="text-muted"><%= camp.location %></small>
-            </p>
-            <a href="campgrounds/<%= camp._id %>" class="btn btn-primary">View <%= camp.title %></a>
+            <div class="card-body">
+               <h5 class="card-title"><%= camp.title %></h5>
+               <p class="card-text"><%= camp.description %></p>
+               <p class="card-text">
+                  <small class="text-muted"><%= camp.location %></small>
+               </p>
+               <a href="campgrounds/<%= camp._id %>" class="btn btn-primary">View <%= camp.title %></a>
+            </div>
          </div>
       </div>
    </div>
