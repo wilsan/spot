@@ -12,11 +12,18 @@ body {
    max-width: 70vw;
 }
 
+.nav-item {
+   margin-left: 1rem;
+}
+
+.nav-item:first-of-type {
+   margin-left: 0;
+}
+
 .nav-link {
    padding: 0.25rem 0;
    font-weight: bolder;
    color: rgba(255, 255, 255, 0.5);
-   margin-left: 1rem;
    border-bottom: 2px solid transparent;
 }
 
